@@ -1,29 +1,38 @@
 package com.group.pocketshelf
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : AppCompatActivity() {
+
+class AddNewBook : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_add_new_book)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-//        // Autostarts the AddNewBook, for troubleshooting :)
-//        val intent = Intent(this, AddNewBook::class.java)
-//        startActivity(intent);
+        // Config action bar (top bar)
+        setSupportActionBar(findViewById(R.id.my_toolbar))
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
 
-        // Autostarts the user library, for troubleshooting :)
-        val intent = Intent(this, UserLibrary::class.java)
-        startActivity(intent);
+
+    }
+
+
+    // Sets up the back/up button
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.getItemId() == android.R.id.home) {
+            finish()  // pops this activity off the back stack
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

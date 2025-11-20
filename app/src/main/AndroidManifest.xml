@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketShelf">
         <activity
+            android:name=".UserLibrary"
+            android:exported="false" />
+        <activity
+            android:name=".AddNewBook"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
