@@ -37,7 +37,7 @@
             android:layout_margin="30dp"
             android:gravity="center"
             android:orientation="vertical"
-            tools:context=".AddNewBook"
+            tools:context=".AddNewBookScreen"
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="1dp">
 

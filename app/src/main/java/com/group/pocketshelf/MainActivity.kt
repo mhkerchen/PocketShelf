@@ -19,11 +19,15 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        // Autostarts the AddNewBook, for troubleshooting :)
-//        val intent = Intent(this, AddNewBook::class.java)
+//        val intent = Intent(this, AddNewBookScreen::class.java)
 //        startActivity(intent);
 
-        // Autostarts the user library, for troubleshooting :)
-        val intent = Intent(this, UserLibrary::class.java)
+//        // Autostarts the user library, for troubleshooting :)
+//        val intent = Intent(this, LibraryShelvesScreen::class.java)
+//        startActivity(intent);
+//
+        // Autostarts the shelf view, for troubleshooting :)
+        val intent = Intent(this, BooksScreen::class.java)
         startActivity(intent);
     }
 }

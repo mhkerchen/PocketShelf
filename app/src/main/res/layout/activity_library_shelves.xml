@@ -7,7 +7,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context=".UserLibrary">
+    tools:context=".LibraryShelvesScreen">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 
     <ScrollView
@@ -23,7 +32,7 @@
             android:layout_margin="20dp"
             android:gravity="center"
             android:orientation="vertical"
-            tools:context=".AddNewBook"
+            tools:context=".AddNewBookScreen"
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="1dp">
 
@@ -37,7 +46,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/all_shelves"
+                android:id="@+id/books"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

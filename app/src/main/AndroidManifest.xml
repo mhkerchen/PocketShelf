@@ -12,10 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketShelf">
         <activity
-            android:name=".UserLibrary"
+            android:name=".BooksScreen"
             android:exported="false" />
         <activity
-            android:name=".AddNewBook"
+            android:name=".LibraryShelvesScreen"
+            android:exported="false" />
+        <activity
+            android:name=".AddNewBookScreen"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

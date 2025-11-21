@@ -1,15 +1,10 @@
 package com.group.pocketshelf
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.widget.TextView
-import android.widget.Toast
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,12 +15,15 @@ private const val ARG_PARAM2 = "shelf_contents"
 // A single shelf, as displayed from the User Library screen.
 
 class LibraryShelf : Fragment() {
-    private var shelf_name: String = "DEFAULT"
+    // private var shelf_name: String = "DEFAULT"
+    //private var shelf_contents: ArrayList<BookData> = ArrayList<BookData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            shelf_name = it.getString(ARG_PARAM1) ?: ""
+            //shelf_name = it.getString(ARG_PARAM1) ?: ""
+            //shelf_contents = it.getSerializable(ARG_PARAM2) as ArrayList<BookData>
+            // currently unused?
         }
     }
 
@@ -34,12 +32,12 @@ class LibraryShelf : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_library_shelf, container, false)
+        return inflater.inflate(R.layout.fragment_single_shelf, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("myTag", "name of shelf is "+shelf_name);
+        //Log.d("myTag", "name of shelf is "+shelf_name);
         //val books_rv = requireActivity().findViewById<RecyclerView>(R.id.horizontal_shelf_view)
 //        val shelfnamewidget = requireActivity().findViewById<TextView>(R.id.shelf_name)
 //        shelfnamewidget.text = "TESTER"//this.shelf_name
@@ -102,10 +100,11 @@ class LibraryShelf : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String) =
+        fun newInstance() =
             LibraryShelf().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    //putString(ARG_PARAM1, param1)
+                    //putSerializable(ARG_PARAM2, param2 as Serializable)
                 }
             }
     }
