@@ -27,7 +27,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="556dp"
         android:layout_weight="1">
 
 
@@ -49,7 +49,12 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                app:boxBackgroundMode="outline"
+                style="@style/RoundedTextInput"
+                >
+
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_book_title"
@@ -66,7 +71,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                app:boxBackgroundMode="outline"
+                style="@style/RoundedTextInput">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_author"
@@ -83,7 +91,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                app:boxBackgroundMode="outline"
+                style="@style/RoundedTextInput">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_language"
@@ -100,7 +111,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                app:boxBackgroundMode="outline"
+                style="@style/RoundedTextInput">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_pagecount"
@@ -117,7 +131,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                app:boxBackgroundMode="outline"
+                style="@style/RoundedTextInput">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_tags"
@@ -134,7 +151,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+
+                app:boxBackgroundMode="outline"
+                style="@style/RoundedTextInput">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_tags"

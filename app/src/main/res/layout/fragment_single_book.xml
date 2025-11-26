@@ -8,20 +8,21 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="5dp"
-    app:cardElevation="10dp"
+    app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
-    tools:context=".SingleBook">
+    tools:context=".SingleBook"
+    app:cardBackgroundColor="@android:color/transparent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="450px">
 
-
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/cover"
             android:layout_width="match_parent"
-            android:layout_height="300px" />
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/RoundedBookCover"/>
 
         <TextView
             android:id="@+id/book_title"
@@ -29,7 +30,15 @@
             android:layout_height="wrap_content"
             android:text="Title"
             android:textAlignment="center"
-            android:textAllCaps="false" />
-    </LinearLayout>
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            android:padding="8dp"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="4"/>
+    </FrameLayout>
 
 </androidx.cardview.widget.CardView>

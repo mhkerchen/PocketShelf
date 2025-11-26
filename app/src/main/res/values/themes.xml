@@ -1,9 +1,34 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PocketShelf" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#C5AF95</item>
+        <item name="android:windowBackground">#F9F6EF</item>
+        <item name="floatingActionButtonStyle">@style/Widget.MyApp.FAB</item>
+
+
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="RoundedTextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearance">@style/RoundedCorners</item>
+    </style>
+
+    <style name="RoundedCorners" parent="ShapeAppearance.Material3.Corner.None">
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <style name="RoundedBookCover" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="Widget.MyApp.FAB" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">#000000</item>  <!-- Your hex color -->
+    </style>
+
+
+
+
     <style name="Theme.PocketShelf" parent="Base.Theme.PocketShelf" />
+
 </resources>
