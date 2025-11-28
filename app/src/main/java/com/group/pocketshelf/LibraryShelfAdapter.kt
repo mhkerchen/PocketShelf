@@ -1,5 +1,6 @@
 package com.group.pocketshelf
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.cardview.widget.CardView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Button
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 
     class LibraryShelfAdapter(val items: ArrayList<ShelfData>):
@@ -46,26 +49,54 @@ import com.squareup.picasso.Picasso
 
         override fun onBindViewHolder(holder: ShelfViewHolder, position: Int) {
             val shelf = items[position]
-            holder.shelfName.text = shelf.name
-            holder.shelfCount.text = shelf.books.size.toString() +"\n books"
-            if (shelf.books.size >= 1) {
+            holder.shelfName.text = shelf.name ?: "Untitled"
+            var t = ""
+            if ((shelf.books?.size ?: 0) > 2) {
+                t =  (shelf.books?.size ?: 0).toString() +"\n books"
+            }
+            holder.shelfCount.text = t
 
-                //holder.firstcover.text = shelf.books[0].url
+            if ((shelf.books?.size ?: 0) > 0) {
+                // find all books that belong to this shelf for previews
+                var auth = FirebaseAuth.getInstance()
+                val query = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("books")
+                var foundBooks : ArrayList<BookData> = ArrayList<BookData>()
+                query.get().addOnSuccessListener { snapshot ->
+                    for (item in snapshot.children) {
+                        val book = item.getValue(BookData::class.java)
+                        if (book != null) {
+                            if (item.key in shelf.books!!) {
+                                foundBooks.add(book)
+                            }
+                        }
+                    }
 
-                var path = shelf.books[0].url
-                Picasso.get().load(path).into(holder.firstcover)
-                holder.firstcover.setOnClickListener {
-                    myListener!!.onItemClickedFromAdapter(shelf.books[0])
-                }
+                    // Populate the cover previews of the shelf (first 2 books)
+                    if (foundBooks.isNotEmpty()) {
 
-                if (shelf.books.size >= 2) {
+                        if (foundBooks[0].cover_is_url) {
+                            var path = foundBooks[0].img_url
+                            Picasso.get().load(path).into(holder.firstcover)
+                        } else {
+                            // TODO
+                        }
+                        holder.firstcover.setOnClickListener {
+                            myListener!!.onItemClickedFromAdapter(foundBooks[0])
+                        }
 
-                    var path = shelf.books[1].url
-                    Picasso.get().load(path)
-                        .into(holder.secondcover)
-                    //holder.secondcover.text = shelf.books[1].url
-                    holder.secondcover.setOnClickListener {
-                        myListener!!.onItemClickedFromAdapter(shelf.books[1])
+                        if (foundBooks.size >= 2) {
+
+                            if (foundBooks[1].cover_is_url) {
+                                var path = foundBooks[1].img_url
+                                Picasso.get().load(path).into(holder.secondcover)
+                            } else {
+                                // TODO
+                            }
+
+                            holder.secondcover.setOnClickListener {
+                                myListener!!.onItemClickedFromAdapter(foundBooks[1])
+                            }
+                        }
                     }
                 }
             }
@@ -77,4 +108,5 @@ import com.squareup.picasso.Picasso
                 true
             }
         }
+
     }

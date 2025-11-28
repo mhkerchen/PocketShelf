@@ -40,11 +40,15 @@ class BooksAdapter(val items: ArrayList<BookData>):
 
         override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
             val book = items[position]
-            holder.bookTitle.text = book.name
+            holder.bookTitle.text = book.title
 
-            var path = book.url
-            Picasso.get().load(path)
-                .into(holder.bookImg)
+            if (book.cover_is_url) {
+                var path = book.img_url
+                Picasso.get().load(path)
+                    .into(holder.bookImg)
+            } else {
+                // TODO get book cover from firebase storage?
+            }
 
             holder.bookCard.setOnClickListener {
                 myListener!!.onItemClickedFromAdapter(book)

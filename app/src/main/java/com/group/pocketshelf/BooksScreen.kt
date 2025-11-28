@@ -1,6 +1,7 @@
 package com.group.pocketshelf
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +10,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 
 class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
 
@@ -36,32 +40,62 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
         rv.layoutManager = layoutManager
 
 
-        val books = ArrayList<BookData>()
+        var auth = FirebaseAuth.getInstance()
+
+        val shelfname : String = intent.getStringExtra("SHELF_NAME") ?: "shelf1"
 
 
-        val book1 = BookData("Test Book 1", "Description", "https://ia.media-imdb.com/images/M/MV5BMTMwNjAxMTc0Nl5BMl5BanBnXkFtZTcwODc3ODk5Mg@@._V1_SY317_CR0,0,214,317_AL_.jpg")
-        val book2 = BookData("Test Book 2", "Description", "https://ia.media-imdb.com/images/M/MV5BMTYwOTEwNjAzMl5BMl5BanBnXkFtZTcwODc5MTUwMw@@._V1_SY317_CR0,0,214,317_AL_.jpg")
-        val book3 = BookData("Test Book 3", "Description", "https://ia.media-imdb.com/images/M/MV5BMTQ1MjQwMTE5OF5BMl5BanBnXkFtZTgwNjk3MTcyMDE@._V1_SX214_AL_.jpg")
-        val book4 = BookData("Test Book 4", "Description", "https://ia.media-imdb.com/images/M/MV5BMjExNzM0NDM0N15BMl5BanBnXkFtZTcwMzkxOTUwNw@@._V1_SY317_CR0,0,214,317_AL_.jpg")
+        // Get the list of book ids that go in this shelf
+        var bookIDs = ArrayList<String>()
+        var books = ArrayList<BookData>()
+        val query = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("shelves")
+        query.get().addOnSuccessListener { snapshot ->
+            // find the shelf that's named the same as the given shelf
+            val typeIndicator = object : GenericTypeIndicator<ArrayList<String>>() {}
+            for (child in snapshot.children) {
+                if (child.key == shelfname) {
+                    val bookidlist = child.child("books").getValue(typeIndicator) ?: ArrayList<String?>()
 
-        books.add(book1)
-        books.add(book2)
-        books.add(book3)
-        books.add(book4)
+                    for (i in bookidlist.indices) {
+                        val bookID = bookidlist?.get(i)
+                        // ^ don't trust android studio, the ?. is load bearing
+                        if (bookID != null) {
+                            bookIDs.add(bookID)
+                        }
+                    }
+                    break
+                }
+            }
 
-        myAdapter = BooksAdapter(books)
-        myAdapter.setMyItemClickListener(this)
-        rv.adapter = myAdapter
+            // look thru all the books and get the books that belong to this shelf
+            val query = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("books")
+            query.get().addOnSuccessListener { snapshot ->
+                for (item in snapshot.children) {
+                    if (item.key in bookIDs) {
+                        val book = item.getValue(BookData::class.java)
+                        if (book != null) {
+                            books.add(book)
+                        }
+                    }
+                }
+
+
+                myAdapter = BooksAdapter(books)
+                myAdapter.setMyItemClickListener(this)
+                rv.adapter = myAdapter
+            }
+        }
     }
 
 
     override fun onItemClickedFromAdapter(book: BookData) {
 
-        Toast.makeText(this, "This will open the ${book.name} book detail pane.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
     }
     override fun onItemLongClickedFromAdapter(book: BookData) {
 
-        Toast.makeText(this, "This will open the ${book.name} book detail pane.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
+
     }
 
 

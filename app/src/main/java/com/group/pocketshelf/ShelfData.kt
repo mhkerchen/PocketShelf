@@ -1,8 +1,8 @@
 package com.group.pocketshelf
-
 import java.io.Serializable
-data class ShelfData (
-    var name: String,
-    var books: List<BookData>
+import com.google.gson.annotations.SerializedName
 
-): Serializable
+data class ShelfData (
+    @SerializedName("name"      ) var name         : String? = null,
+    @SerializedName("books"     ) var books        : ArrayList<String>? = null
+) : Serializable

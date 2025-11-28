@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -49,9 +50,8 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.google.firebase:firebase-database")
     implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
-
-
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.code.gson:gson:2.13.2")
 }
