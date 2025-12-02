@@ -11,24 +11,42 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketShelf">
+
+        <!-- Your new screens -->
+        <activity
+            android:name=".LoginSignupActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".StartingActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".BookTemplateActivity"
+            android:exported="false" />
+
+        <!-- Existing group project screens -->
         <activity
             android:name=".BooksScreen"
             android:exported="false" />
+
         <activity
             android:name=".LibraryShelvesScreen"
             android:exported="false" />
+
         <activity
             android:name=".AddNewBookScreen"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
