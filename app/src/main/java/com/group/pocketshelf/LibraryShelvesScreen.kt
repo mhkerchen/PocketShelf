@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.GenericTypeIndicator
 
 class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClickListener {
@@ -31,6 +33,12 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
         // Config action bar (top bar)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
+
+        // Config menu bar (bottom bar)
+        var fabButton = findViewById<FloatingActionButton>(R.id.fab)
+        fabButton.setOnClickListener {
+            Toast.makeText(this, "This will open the Create New Shelf dialog.", Toast.LENGTH_SHORT).show()
+        }
 
 
         val layoutManager = LinearLayoutManager(this)
@@ -65,7 +73,7 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
     override fun onItemClickedFromAdapter(shelf: ShelfData) {
 
 
-        Toast.makeText(this, "This will open the ${shelf.name} shelf.", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "This will open the ${shelf.name} shelf.", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, BooksScreen::class.java)
         intent.putExtra("SHELF_NAME", shelf.name)
         startActivity(intent);

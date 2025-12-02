@@ -1,8 +1,10 @@
 package com.group.pocketshelf
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
@@ -43,8 +47,8 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
         var auth = FirebaseAuth.getInstance()
 
         val shelfname : String = intent.getStringExtra("SHELF_NAME") ?: "shelf1"
-
-
+        var shelfname_widget = findViewById<TextView>(R.id.shelf_name)
+        shelfname_widget.text = shelfname
         // Get the list of book ids that go in this shelf
         var bookIDs = ArrayList<String>()
         var books = ArrayList<BookData>()
@@ -84,6 +88,17 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
                 myAdapter.setMyItemClickListener(this)
                 rv.adapter = myAdapter
             }
+        }
+
+
+
+
+        // Config menu bar (bottom bar)
+        var fabButton = findViewById<FloatingActionButton>(R.id.fab)
+        fabButton.setOnClickListener {
+            val intent = Intent(this, AddNewBookScreen::class.java)
+            intent.putExtra("ADD_TO_SHELF", shelfname)
+            startActivity(intent);
         }
     }
 

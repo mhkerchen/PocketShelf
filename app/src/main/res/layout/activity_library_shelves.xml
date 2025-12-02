@@ -56,6 +56,7 @@
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -63,13 +64,13 @@
         android:background="#C5AF95">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/cancel_button"
+            android:id="@+id/fab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:clickable="true"
             android:contentDescription="Cancel"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+            app:srcCompat="@android:drawable/ic_menu_add" />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </LinearLayout>

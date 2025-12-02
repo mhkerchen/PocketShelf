@@ -1,19 +1,33 @@
 package com.group.pocketshelf
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
+import com.group.pocketshelf.bookapi.DCGoogleBook
+import com.group.pocketshelf.bookapi.GoogleBooksAPI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.squareup.picasso.Picasso
 
 
 class AddNewBookScreen : AppCompatActivity() {
+    private lateinit var gbInterface: GoogleBooksAPI.GoogleBooksApiService
+
+    private var isImageUrl : Boolean? = null
+    private var imageSource : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,11 +38,40 @@ class AddNewBookScreen : AppCompatActivity() {
             insets
         }
 
+        val shelfname : String = intent.getStringExtra("ADD_TO_SHELF") ?: "NONE"
         // Config action bar (top bar)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
+        if (shelfname != "NONE") {
+            supportActionBar?.title = "Back to \""+shelfname+"\""
+        }
 
-        testPopulateDB()
+        val cover = findViewById<ImageView>(R.id.cover_preview_image)
+        Picasso.get().setLoggingEnabled(true)
+        Picasso.get().load(
+            "http://books.google.com/books/content?id=E2swDQAAQBAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api"
+            )
+            .error(R.drawable.gatsby)
+            .into(cover)
+
+        // Config menu bar (bottom bar)
+        var fabButton = findViewById<FloatingActionButton>(R.id.fab)
+        fabButton.setOnClickListener {
+            finish()
+        }
+
+        gbInterface = RetrofitObject.provideRetrofit()
+
+        // Config menu bar (bottom bar)
+        var searchButton = findViewById<Button>(R.id.isbn_search)
+        searchButton.setOnClickListener {
+            val search_text = findViewById<EditText>(R.id.isbn_input).text
+            searchAPI(search_text.toString())
+        }
+
+//        searchAPI("harry potter")
+        searchAPI("isbn:9781949846416")
+
     }
 
 
@@ -42,30 +85,63 @@ class AddNewBookScreen : AppCompatActivity() {
     }
 
 
-    fun testPopulateDB() {
-//        var book1 = BookData(
-//            title = "Alice", cover_is_url = true, img_url = "https://ia.media-imdb.com/images/M/MV5BMTMwNjAxMTc0Nl5BMl5BanBnXkFtZTcwODc3ODk5Mg@@._V1_SY317_CR0,0,214,317_AL_.jpg"
-//        )
-//        var book2 = BookData(
-//            title = "Avatar", cover_is_url = true, img_url = "https://ia.media-imdb.com/images/M/MV5BMTYwOTEwNjAzMl5BMl5BanBnXkFtZTcwODc5MTUwMw@@._V1_SY317_CR0,0,214,317_AL_.jpg"
-//        )
-//        var book3 = BookData(
-//            title = "Frozen", cover_is_url = true, img_url = "https://ia.media-imdb.com/images/M/MV5BMTQ1MjQwMTE5OF5BMl5BanBnXkFtZTgwNjk3MTcyMDE@._V1_SX214_AL_.jpg"
-//        )
-//        var book4 = BookData(
-//            title = "Titanic", cover_is_url = true, img_url = "https://ia.media-imdb.com/images/M/MV5BMjExNzM0NDM0N15BMl5BanBnXkFtZTcwMzkxOTUwNw@@._V1_SY317_CR0,0,214,317_AL_.jpg"
-//        )
-//
-//        var auth = FirebaseAuth.getInstance()
-//        val users = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("books")
-//        var new: DatabaseReference = users.push()
-//        new.setValue(book1)
-//        new = users.push()
-//        new.setValue(book2)
-//        new = users.push()
-//        new.setValue(book3)
-//        new = users.push()
-//        new.setValue(book4)
 
+    fun searchAPI(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = gbInterface.searchBooks(query)
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()
+                    val book = body?.items?.get(0)?.volumeInfo
+                    Log.d("API result", book?.title ?: "NULL")
+
+                    if (book != null) {
+                        setFields(book)
+                    }
+
+                } else {
+                    Log.e("Error", "Error: ${response.code()} - ${response.message()}")
+                }
+            } catch (e: Exception) {
+                Log.e("Error", "Network Error: ${e.localizedMessage}")
+            }
+        }
     }
+
+    suspend fun setFields(book: DCGoogleBook) {
+        val bookTitle = findViewById<TextInputEditText>(R.id.enter_book_title)
+        val author = findViewById<TextInputEditText>(R.id.enter_author)
+        val pagecount = findViewById<TextInputEditText>(R.id.enter_pagecount)
+        val synopsis = findViewById<TextInputEditText>(R.id.enter_synopsis)
+        val cover = findViewById<ImageView>(R.id.cover_preview_image)
+
+        var syn : String = ""
+        book.description?.length?.let {
+            if (it > 250) {
+                syn = book.description!!.substring(0,250) + "..."
+            } else {
+                syn = book.description?: ""
+            }
+        }
+
+        this.isImageUrl = true
+        this.imageSource = book.imageLinks?.get("smallThumbnail")
+        var imgSource = this.imageSource + "key=AIzaSyC7w1uzil51oTDLmMNEDhLFfEgV7QReSG8"
+
+        withContext(Dispatchers.Main) {
+
+            bookTitle.setText(book.title?: "")
+            author.setText(book.authors?.get(0) ?: "")
+            pagecount.setText(book.pageCount.toString())
+            synopsis.setText(syn)
+            Log.d("Trying to load", imgSource ?: "none")
+
+//            Picasso.get().load(imgSource).into(cover)
+
+        }
+    }
+
+
+
+
 }
