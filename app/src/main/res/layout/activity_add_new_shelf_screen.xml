@@ -5,9 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-
-    tools:context=".LibraryShelvesScreen">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -18,9 +17,15 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
+    <TextView
+        android:id="@+id/header_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nAdd a Shelf"
+        android:textAlignment="center"
+        android:textSize="20sp" />
 
     <ScrollView
-        android:id="@+id/padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -29,7 +34,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_margin="30dp"
             android:gravity="center"
             android:orientation="vertical"
             tools:context=".AddNewBookScreen"
@@ -37,20 +42,36 @@
             tools:layout_editor_absoluteY="1dp">
 
             <TextView
-                android:id="@+id/header_text"
+                android:id="@+id/label_shelf_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hello, user"
-                android:textAlignment="viewStart"
-                android:textSize="20sp" />
+                android:text="Shelf Title" />
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/books"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/RoundedTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
 
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/enter_shelf_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter name" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
 
         </LinearLayout>
 
@@ -72,7 +93,8 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:contentDescription="Cancel"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
+
 
 </LinearLayout>

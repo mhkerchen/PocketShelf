@@ -2,6 +2,7 @@ package com.group.pocketshelf
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +16,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.GenericTypeIndicator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClickListener {
 
@@ -37,8 +41,17 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
         // Config menu bar (bottom bar)
         var fabButton = findViewById<FloatingActionButton>(R.id.fab)
         fabButton.setOnClickListener {
-            Toast.makeText(this, "This will open the Create New Shelf dialog.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AddNewShelfScreen::class.java)
+            startActivity(intent);
+
         }
+
+        // Config top bar
+        setSupportActionBar(findViewById(R.id.my_toolbar))
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(false) // always hide back button
+//        if (shelfname != "NONE") {
+//            supportActionBar?.title = "Back to \""+shelfname+"\""
+//        }
 
 
         val layoutManager = LinearLayoutManager(this)
@@ -48,8 +61,6 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
 
 
         val myShelves = ArrayList<ShelfData>()
-
-
         var auth = FirebaseAuth.getInstance()
         val query = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("shelves")
         query.get().addOnSuccessListener { snapshot ->
@@ -64,6 +75,9 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
             myAdapter.setMyItemClickListener(this)
             rv.adapter = myAdapter
         }
+
+
+
 
     }
 
@@ -98,4 +112,35 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onResume() {
+        super.onResume()
+        val layoutManager = LinearLayoutManager(this)
+        val rv = findViewById<RecyclerView>(R.id.books)
+        rv.hasFixedSize()
+        rv.layoutManager = layoutManager
+
+        val thisScope = this
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val myShelves = ArrayList<ShelfData>()
+            var auth = FirebaseAuth.getInstance()
+            val query = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("shelves")
+            query.get().addOnSuccessListener { snapshot ->
+                for (child in snapshot.children) {
+                    val shelf = child.getValue(ShelfData::class.java)
+                    if (shelf != null) {
+                        myShelves.add(shelf)
+                    }
+                }
+
+                myAdapter = LibraryShelfAdapter(myShelves)
+                myAdapter.setMyItemClickListener(thisScope)
+                rv.adapter = myAdapter
+            }
+        }
+    }
+
+
 }

@@ -17,6 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
 
@@ -122,4 +125,73 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
+
+
+    override fun onResume() {
+        super.onResume()
+        val NUMBER_COLUMNS = 4
+        val layoutManager = GridLayoutManager(this, NUMBER_COLUMNS)
+        val thisScope = this
+
+        val rv = findViewById<RecyclerView>(R.id.books)
+        rv.hasFixedSize()
+        rv.layoutManager = layoutManager
+
+
+        var auth = FirebaseAuth.getInstance()
+
+        val shelfname: String = intent.getStringExtra("SHELF_NAME") ?: "shelf1"
+        var shelfname_widget = findViewById<TextView>(R.id.shelf_name)
+        shelfname_widget.text = shelfname
+        // Get the list of book ids that go in this shelf
+        var bookIDs = ArrayList<String>()
+        var books = ArrayList<BookData>()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val query = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!)
+                .child("shelves")
+            query.get().addOnSuccessListener { snapshot ->
+                // find the shelf that's named the same as the given shelf
+                val typeIndicator = object : GenericTypeIndicator<ArrayList<String>>() {}
+                for (child in snapshot.children) {
+                    if (child.key == shelfname) {
+                        val bookidlist =
+                            child.child("books").getValue(typeIndicator) ?: ArrayList<String?>()
+
+                        for (i in bookidlist.indices) {
+                            val bookID = bookidlist?.get(i)
+                            // ^ don't trust android studio, the ?. is load bearing
+                            if (bookID != null) {
+                                bookIDs.add(bookID)
+                            }
+                        }
+                        break
+                    }
+                }
+
+                // look thru all the books and get the books that belong to this shelf
+                val query =
+                    FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!)
+                        .child("books")
+                query.get().addOnSuccessListener { snapshot ->
+                    for (item in snapshot.children) {
+                        if (item.key in bookIDs) {
+                            val book = item.getValue(BookData::class.java)
+                            if (book != null) {
+                                books.add(book)
+                            }
+                        }
+                    }
+
+
+                    myAdapter = BooksAdapter(books)
+                    myAdapter.setMyItemClickListener(thisScope)
+                    rv.adapter = myAdapter
+                }
+            }
+        }
+    }
+
 }

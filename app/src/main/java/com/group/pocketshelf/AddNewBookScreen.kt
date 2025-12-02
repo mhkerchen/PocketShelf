@@ -13,6 +13,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.group.pocketshelf.bookapi.DCGoogleBook
 import com.group.pocketshelf.bookapi.GoogleBooksAPI
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +30,7 @@ class AddNewBookScreen : AppCompatActivity() {
 
     private var isImageUrl : Boolean? = null
     private var imageSource : String? = null
+    private var shelfname : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,21 +42,13 @@ class AddNewBookScreen : AppCompatActivity() {
             insets
         }
 
-        val shelfname : String = intent.getStringExtra("ADD_TO_SHELF") ?: "NONE"
+        shelfname = intent.getStringExtra("ADD_TO_SHELF") ?: "NONE"
         // Config action bar (top bar)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
         if (shelfname != "NONE") {
             supportActionBar?.title = "Back to \""+shelfname+"\""
         }
-
-        val cover = findViewById<ImageView>(R.id.cover_preview_image)
-        Picasso.get().setLoggingEnabled(true)
-        Picasso.get().load(
-            "http://books.google.com/books/content?id=E2swDQAAQBAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api"
-            )
-            .error(R.drawable.gatsby)
-            .into(cover)
 
         // Config menu bar (bottom bar)
         var fabButton = findViewById<FloatingActionButton>(R.id.fab)
@@ -62,15 +58,20 @@ class AddNewBookScreen : AppCompatActivity() {
 
         gbInterface = RetrofitObject.provideRetrofit()
 
-        // Config menu bar (bottom bar)
-        var searchButton = findViewById<Button>(R.id.isbn_search)
+        // Interface buttons
+        val searchButton = findViewById<Button>(R.id.isbn_search)
         searchButton.setOnClickListener {
             val search_text = findViewById<EditText>(R.id.isbn_input).text
             searchAPI(search_text.toString())
         }
 
+        val submitButton = findViewById<Button>(R.id.submit_button)
+        submitButton.setOnClickListener {
+            addBook() // also finishes activity BTW
+        }
+
 //        searchAPI("harry potter")
-        searchAPI("isbn:9781949846416")
+        //searchAPI("isbn:9781949846416")
 
     }
 
@@ -134,14 +135,66 @@ class AddNewBookScreen : AppCompatActivity() {
             author.setText(book.authors?.get(0) ?: "")
             pagecount.setText(book.pageCount.toString())
             synopsis.setText(syn)
-            Log.d("Trying to load", imgSource ?: "none")
+            Log.d("Trying to load", imgSource)
 
-//            Picasso.get().load(imgSource).into(cover)
+            Picasso.get().load(imgSource).into(cover)
 
         }
     }
 
+    // Create book from fields and this book to the shelf + DB
+    fun addBook() {
+        val bookTitle = findViewById<TextInputEditText>(R.id.enter_book_title)
+        val author = findViewById<TextInputEditText>(R.id.enter_author)
+        val pagecount = findViewById<TextInputEditText>(R.id.enter_pagecount)
+        val synopsis = findViewById<TextInputEditText>(R.id.enter_synopsis)
+        val tags_obj = findViewById<TextInputEditText>(R.id.enter_tags)
+        val lang = findViewById<TextInputEditText>(R.id.enter_language)
 
+        var tags : List<String> = tags_obj.text.toString().split(",")
 
+        var book = BookData(
+            title = bookTitle.text.toString(),
+            img_url = imageSource,
+            cover_is_url = isImageUrl ?: false,
+            author = author.text.toString(),
+            page_count = pagecount.text.toString(),
+            synopsis = synopsis.text.toString(),
+            language = lang.text.toString(),
+            tags = ArrayList<String>(tags)
+        )
 
+        var auth = FirebaseAuth.getInstance()
+        val users = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("books")
+        var new: DatabaseReference = users.push()
+        new.setValue(book)
+
+        if (shelfname != null) {
+            val shelf = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("shelves").child(shelfname!!).child("books")
+
+            var newShelf = ArrayList<String>()
+            shelf.get().addOnSuccessListener { snapshot ->
+                for (item in snapshot.children) {
+                    val shelfentry = item.getValue(String::class.java)
+                    if (shelfentry != null) {
+                        newShelf.add(shelfentry)
+                    }
+                }
+                newShelf.add(new.key ?: "")
+
+                FirebaseDatabase.getInstance().reference
+                    .child("users")
+                    .child(auth.uid!!)
+                    .child("shelves")
+                    .child(shelfname!!)
+                    .child("books")
+                    .setValue(newShelf)
+
+                Log.w("Finishing", "Writing data")
+
+                finish()
+
+            }
+        }
+    }
 }
