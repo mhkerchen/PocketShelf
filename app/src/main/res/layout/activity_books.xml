@@ -37,10 +37,10 @@ tools:context=".BooksScreen">
         tools:layout_editor_absoluteY="1dp">
 
         <TextView
-            android:id="@+id/header_text"
+            android:id="@+id/shelf_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello, user"
+            android:text="Unnamed Shelf"
             android:textAlignment="viewStart"
             android:textSize="20sp" />
 
@@ -55,21 +55,22 @@ tools:context=".BooksScreen">
 
 </ScrollView>
 
-<com.google.android.material.bottomnavigation.BottomNavigationView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_weight="0"
-    android:background="#C5AF95">
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/cancel_button"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:clickable="true"
-        android:contentDescription="Cancel"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-</com.google.android.material.bottomnavigation.BottomNavigationView>
+        android:layout_weight="0"
+        android:background="#C5AF95">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:contentDescription="Cancel"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </LinearLayout>

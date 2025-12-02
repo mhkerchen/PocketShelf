@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password)
-        Log.w("mytag", auth.uid?: "No user")
+//
+//        createNewUser("test1@test1.org", "1234567890")
 
 //        // Autostarts the AddNewBook, for troubleshooting :)
 //        val intent = Intent(this, AddNewBookScreen::class.java)
@@ -42,5 +43,31 @@ class MainActivity : AppCompatActivity() {
 //        // Autostarts the shelf view, for troubleshooting :)
 //        val intent = Intent(this, BooksScreen::class.java)
 //        startActivity(intent);
+    }
+
+
+    fun createNewUser(email : String, password: String) {
+        auth = FirebaseAuth.getInstance()
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    initDB(user!!.uid)
+//                    Toast.makeText(this, "Welcome ${user?.email}",
+//                        Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, LibraryShelvesScreen::class.java))
+                } else {
+
+//                      Toast.makeText(this, "Signup failed. Make sure that you provided a \nvalid email and a password over 6 characters.",
+//                        Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    fun initDB(user: String) {
+
+
+
     }
 }

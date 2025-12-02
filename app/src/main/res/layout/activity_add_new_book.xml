@@ -27,7 +27,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="556dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
 
 
@@ -42,18 +42,62 @@
             tools:layout_editor_absoluteY="1dp">
 
             <TextView
+                android:id="@+id/header_text_isbn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ISBN Lookup"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/scan_isbn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
+
+                <EditText
+                    android:id="@+id/isbn_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Enter ISBN"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/isbn_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Find" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/header_text_manual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="or Manual Entry"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <TextView
                 android:id="@+id/label_book_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Book Title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                app:boxBackgroundMode="outline"
                 style="@style/RoundedTextInput"
-                >
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline">
 
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -70,11 +114,11 @@
                 android:text="Author" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/RoundedTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                app:boxBackgroundMode="outline"
-                style="@style/RoundedTextInput">
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_author"
@@ -90,11 +134,11 @@
                 android:text="Language" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/RoundedTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                app:boxBackgroundMode="outline"
-                style="@style/RoundedTextInput">
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_language"
@@ -110,11 +154,11 @@
                 android:text="Page Count" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/RoundedTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                app:boxBackgroundMode="outline"
-                style="@style/RoundedTextInput">
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_pagecount"
@@ -130,11 +174,11 @@
                 android:text="Tags" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/RoundedTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                app:boxBackgroundMode="outline"
-                style="@style/RoundedTextInput">
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/enter_tags"
@@ -150,14 +194,14 @@
                 android:text="Synopsis" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/RoundedTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
 
-                app:boxBackgroundMode="outline"
-                style="@style/RoundedTextInput">
+                android:layout_height="match_parent"
+                app:boxBackgroundMode="outline">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/enter_tags"
+                    android:id="@+id/enter_synopsis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter synopsis" />
@@ -171,11 +215,10 @@
 
                 <ImageView
                     android:id="@+id/cover_preview_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
-                    android:contentDescription="Cover preview"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:contentDescription="Cover preview"/>
 
                 <Button
                     android:id="@+id/pick_image_button"
@@ -184,13 +227,6 @@
                     android:layout_weight="1"
                     android:text="Pick Image" />
 
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="Pick image"
-                    app:srcCompat="@android:drawable/ic_menu_gallery" />
             </LinearLayout>
 
             <Button
@@ -199,6 +235,10 @@
                 android:layout_height="wrap_content"
                 android:text="Submit" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
 
         </LinearLayout>
 
@@ -206,6 +246,7 @@
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -213,7 +254,7 @@
         android:background="#C5AF95">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/cancel_button"
+            android:id="@+id/fab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
