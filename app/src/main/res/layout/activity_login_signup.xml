@@ -21,8 +21,15 @@
         android:layout_marginTop="12dp" />
 
     <Button
-        android:id="@+id/buttonContinue"
-        android:text="Continue"
+        android:id="@+id/buttonLogin"
+        android:text="Log In"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/buttonSignup"
+        android:text="Sign Up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp" />

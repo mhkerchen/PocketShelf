@@ -21,14 +21,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        // Autostart login screen
+        auth = FirebaseAuth.getInstance()
+        auth.signOut()
+        val intent = Intent(this, LoginSignupActivity::class.java)
+        startActivity(intent);
+
         // computer security is my passion
         // XSVhqqutpvPIpScdLr0jkLBzGs42
-        val email = "test@y.com"
-        val password = "123456"
+//        val email = "test@y.com"
+//        val password = "123456"
 
-
-        auth = FirebaseAuth.getInstance()
-        auth.signInWithEmailAndPassword(email, password)
+//
+//        auth = FirebaseAuth.getInstance()
+//        auth.signInWithEmailAndPassword(email, password)
 //
 //        createNewUser("test1@test1.org", "1234567890")
 
@@ -36,9 +42,9 @@ class MainActivity : AppCompatActivity() {
 //        val intent = Intent(this, AddNewBookScreen::class.java)
 //        startActivity(intent);
 
-        // Autostarts the user library, for troubleshooting :)
-        val intent = Intent(this, LibraryShelvesScreen::class.java)
-        startActivity(intent);
+//        // Autostarts the user library, for troubleshooting :)
+//        val intent = Intent(this, LibraryShelvesScreen::class.java)
+//        startActivity(intent);
 //
 //        // Autostarts the shelf view, for troubleshooting :)
 //        val intent = Intent(this, BooksScreen::class.java)
@@ -46,28 +52,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun createNewUser(email : String, password: String) {
-        auth = FirebaseAuth.getInstance()
 
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    initDB(user!!.uid)
-//                    Toast.makeText(this, "Welcome ${user?.email}",
-//                        Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, LibraryShelvesScreen::class.java))
-                } else {
-
-//                      Toast.makeText(this, "Signup failed. Make sure that you provided a \nvalid email and a password over 6 characters.",
-//                        Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-    fun initDB(user: String) {
-
-
-
-    }
 }

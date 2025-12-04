@@ -2,22 +2,97 @@ package com.group.pocketshelf
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.group.pocketshelf.databinding.ActivityLoginSignupBinding
 
 class LoginSignupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginSignupBinding
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginSignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        auth = FirebaseAuth.getInstance()
+
+
         // Navigate to Starting Page
-        binding.buttonContinue.setOnClickListener {
-            val intent = Intent(this, StartingActivity::class.java)
-            startActivity(intent)
+        binding.buttonLogin.setOnClickListener {
+            if (binding.editEmail.text.toString() == "" || binding.editPassword.text.toString() == "") {
+
+                Toast.makeText(this, "Please enter an email and password",
+                    Toast.LENGTH_SHORT).show()
+            } else {
+                loginUser(
+                    binding.editEmail.text.toString(),
+                    binding.editPassword.text.toString()
+                )
+
+            }
+
         }
+
+        // Sign up
+        binding.buttonSignup.setOnClickListener {
+            if (binding.editEmail.text.toString() == "" || binding.editPassword.text.toString() == "") {
+
+                Toast.makeText(this, "Please enter an email and password",
+                    Toast.LENGTH_SHORT).show()
+            } else {
+                createNewUser(
+                    binding.editEmail.text.toString(),
+                    binding.editPassword.text.toString()
+                )
+
+            }
+        }
+
+
+    }
+
+
+
+
+    fun createNewUser(email : String, password: String) {
+        var auth = FirebaseAuth.getInstance()
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Toast.makeText(this, "Welcome ${user?.email}",
+                        Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, LibraryShelvesScreen::class.java))
+                } else {
+
+                    Toast.makeText(this, "Signup failed. Make sure that you provided a \nvalid email and a password over 6 characters.",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+
+
+    fun loginUser(email : String, password: String) {
+        var auth = FirebaseAuth.getInstance()
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Toast.makeText(this, "Welcome ${user?.email}", Toast.LENGTH_SHORT).show()
+
+                    startActivity(Intent(this, LibraryShelvesScreen::class.java))
+                } else {
+
+                    Toast.makeText(this, "Login failed. Did you provide the right credentials?",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
