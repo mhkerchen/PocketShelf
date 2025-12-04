@@ -22,12 +22,10 @@ class StartingActivity : AppCompatActivity() {
         // When the button is clicked, move to the login/signup screen
         getStartedBtn.setOnClickListener {
             if (auth.uid == null) {
-                val intent = Intent(this, LoginSignupActivity::class.java)
+                startActivity( Intent(this, LoginSignupActivity::class.java) )
             } else {
-                val intent = Intent(this, LibraryShelvesScreen::class.java)
+                startActivity(Intent(this, LibraryShelvesScreen::class.java))
             }
-
-            startActivity(intent)
         }
     }
 }

@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         // Autostart login screen
         auth = FirebaseAuth.getInstance()
         auth.signOut()
-        val intent = Intent(this, LoginSignupActivity::class.java)
+        val intent = Intent(this, StartingActivity::class.java)
         startActivity(intent);
 
         // computer security is my passion

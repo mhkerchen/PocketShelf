@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "359921414484",
+    "project_id": "pocketshelf-3b13a",
+    "storage_bucket": "pocketshelf-3b13a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359921414484:android:eb35869e4544b5b56e98c1",
+        "android_client_info": {
+          "package_name": "com.group.pocketshelf"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoOsLf73M8yqaP6-KZppuX9no71h9anoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
