@@ -20,6 +20,12 @@ class LoginSignupActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        // computer security is my passion
+        // XSVhqqutpvPIpScdLr0jkLBzGs42
+        val email = "test@y.com"
+        val password = "123456"
+        binding.editPassword.setText(password)
+        binding.editEmail.setText(email)
 
         // Navigate to Starting Page
         binding.buttonLogin.setOnClickListener {

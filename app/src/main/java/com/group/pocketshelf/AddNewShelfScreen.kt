@@ -32,19 +32,33 @@ class AddNewShelfScreen : AppCompatActivity() {
         supportActionBar?.title = "Add New Shelf to Library"
 
         // Config menu bar (bottom bar)
-        var fabButton = findViewById<FloatingActionButton>(R.id.fab)
+        val fabButton = findViewById<FloatingActionButton>(R.id.fab)
         fabButton.setOnClickListener {
             finish()
         }
 
-
+        val inputField = findViewById<TextInputEditText>(R.id.enter_shelf_title)
 
         val submitButton = findViewById<Button>(R.id.submit_button)
         submitButton.setOnClickListener {
-            addShelf() // also finishes activity BTW
+            if (inputField.text.toString() == "") {
+                Toast.makeText(this, "Cannot create an unnamed shelf", Toast.LENGTH_SHORT).show()
+                //finish()
+            } else {
+                addShelf() // also finishes activity BTW
+            }
         }
 
 
+        val deleteButton = findViewById<Button>(R.id.delete_button)
+        deleteButton.setOnClickListener {
+            if (inputField.text.toString() == "") {
+                Toast.makeText(this, "Please name shelf to delete", Toast.LENGTH_SHORT).show()
+                //finish()
+            } else {
+                deleteShelf() // also finishes activity BTW
+            }
+        }
 
     }
     // Sets up the back/up button
@@ -60,12 +74,16 @@ class AddNewShelfScreen : AppCompatActivity() {
     fun addShelf() {
         val shelfTitle = findViewById<TextInputEditText>(R.id.enter_shelf_title)
 
+        var shelfname = shelfTitle.text.toString()
+        if (shelfname == "") {
+            shelfname = "Untitled"
+        }
+
         var shelf = ShelfData(
-            name = shelfTitle.text.toString(),
+            name = shelfname,
             books = ArrayList<String>()
         )
 
-        var shelfname = shelf.name!!
 
         var auth = FirebaseAuth.getInstance()
         val shelves = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("shelves")
@@ -87,5 +105,31 @@ class AddNewShelfScreen : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+
+
+    fun deleteShelf() {
+        val shelfTitle = findViewById<TextInputEditText>(R.id.enter_shelf_title)
+
+        var shelfname = shelfTitle.text.toString()
+        if (shelfname == "") {
+            Toast.makeText(this, "Please name shelf to delete", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        var auth = FirebaseAuth.getInstance()
+        val shelves = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("shelves")
+        val shelfToDelete = shelves.child(shelfname)
+        shelfToDelete.removeValue()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Shelf $shelfname deleted", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .addOnFailureListener { e ->
+                // Error removing child
+                Log.e("Firebase", "Error removing child: ${e.message}")
+            }
+
     }
 }

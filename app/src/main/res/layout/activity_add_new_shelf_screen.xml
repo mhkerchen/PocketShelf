@@ -66,11 +66,31 @@
                 android:id="@+id/submit_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Submit" />
+                android:text="Create Shelf" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="150dp" />
+                android:layout_height="25dp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="or"
+                android:textAlignment="center" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <Button
+                android:id="@+id/delete_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B4814D"
+                android:drawableLeft="@android:drawable/ic_dialog_alert"
+                android:text="Delete shelf with this name"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
