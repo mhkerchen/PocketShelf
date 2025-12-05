@@ -55,22 +55,26 @@ tools:context=".BooksScreen">
 
 </ScrollView>
 
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0"
-        android:background="#C5AF95">
+        android:layout_gravity="bottom"
+        android:background="#C5AF95"
+        app:itemRippleColor="@android:color/transparent"
+        app:menu="@menu/bottom_nav_menu">
 
+
+        <!-- Floating Action Button in the middle -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:contentDescription="Cancel"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Add"
+            android:src="@android:drawable/ic_input_add" />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </LinearLayout>
