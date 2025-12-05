@@ -1,8 +1,10 @@
 package com.group.pocketshelf
 
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.group.pocketshelf.databinding.ActivityLoginSignupBinding
@@ -14,6 +16,7 @@ class StartingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_starting)
         // This connects to res/layout/activity_starting.xml
 
+
         // Finds the "Get Started" button
         val getStartedBtn = findViewById<Button>(R.id.btnGetStarted)
 
@@ -23,8 +26,10 @@ class StartingActivity : AppCompatActivity() {
         getStartedBtn.setOnClickListener {
             if (auth.uid == null) {
                 startActivity( Intent(this, LoginSignupActivity::class.java) )
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             } else {
                 startActivity(Intent(this, LibraryShelvesScreen::class.java))
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             }
         }
     }

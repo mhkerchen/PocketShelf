@@ -1,11 +1,15 @@
 package com.group.pocketshelf
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.group.pocketshelf.databinding.ActivityLoginSignupBinding
+import android.view.View
 
 class LoginSignupActivity : AppCompatActivity() {
 
@@ -73,7 +77,11 @@ class LoginSignupActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     Toast.makeText(this, "Welcome ${user?.email}",
                         Toast.LENGTH_SHORT).show()
+
                     startActivity(Intent(this, LibraryShelvesScreen::class.java))
+                    overridePendingTransition(R.anim.scale_in, android.R.anim.fade_out)
+
+
                 } else {
 
                     Toast.makeText(this, "Signup failed. Make sure that you provided a \nvalid email and a password over 6 characters.",
@@ -94,6 +102,8 @@ class LoginSignupActivity : AppCompatActivity() {
                     Toast.makeText(this, "Welcome ${user?.email}", Toast.LENGTH_SHORT).show()
 
                     startActivity(Intent(this, LibraryShelvesScreen::class.java))
+                    overridePendingTransition(R.anim.scale_in, android.R.anim.fade_out)
+
                 } else {
 
                     Toast.makeText(this, "Login failed. Did you provide the right credentials?",

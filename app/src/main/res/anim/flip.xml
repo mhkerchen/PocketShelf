@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    val anim = ObjectAnimator.ofFloat(view, "rotationY", 0f, 180f)
+    anim.duration = 500
+    anim.start()
+
+</set>
