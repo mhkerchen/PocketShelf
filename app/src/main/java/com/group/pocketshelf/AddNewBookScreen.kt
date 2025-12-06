@@ -34,6 +34,7 @@ class AddNewBookScreen : AppCompatActivity() {
 
     private var isImageUrl : Boolean? = null
     private var imageSource : String? = null
+    private var imageSourceURI : String? = null
     private var shelfname : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +85,7 @@ class AddNewBookScreen : AppCompatActivity() {
                 val imgUri = data?.data
                 selectedImage.setImageURI(imgUri)
                 //isImageUrl = false
-                imageSource = imgUri.toString()
+                imageSourceURI = imgUri.toString()
 
             }
         }
@@ -183,6 +184,7 @@ class AddNewBookScreen : AppCompatActivity() {
         var book = BookData(
             title = bookTitle.text.toString(),
             img_url = imageSource,
+            img_path=imageSourceURI,
             cover_is_url = isImageUrl ?: true,
             author = author.text.toString(),
             page_count = pagecount.text.toString(),

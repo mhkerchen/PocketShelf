@@ -51,9 +51,6 @@ import com.squareup.picasso.Picasso
             val shelf = items[position]
             holder.shelfName.text = shelf.name ?: "Untitled"
             var t = ""
-            if ((shelf.books?.size ?: 0) > 2) {
-                t =  (shelf.books?.size ?: 0).toString() +"\n books"
-            }
             holder.shelfCount.text = t
 
             if ((shelf.books?.size ?: 0) > 0) {
@@ -70,6 +67,10 @@ import com.squareup.picasso.Picasso
                             }
                         }
                     }
+                    if ((foundBooks.size) > 2) {
+                        t =  foundBooks.size.toString() +"\n books"
+                    }
+                    holder.shelfCount.text = t
 
                     // Populate the cover previews of the shelf (first 2 books)
                     if (foundBooks.isNotEmpty()) {
