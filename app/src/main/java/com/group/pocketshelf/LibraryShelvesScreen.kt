@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,15 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
 //        if (shelfname != "NONE") {
 //            supportActionBar?.title = "Back to \""+shelfname+"\""
 //        }
+        val user = FirebaseAuth.getInstance().currentUser
+
+        val headerText = findViewById<TextView>(R.id.header_text)
+        if (user == null) {
+            headerText.text = "Welcome, user"
+        } else {
+            headerText.text = "Welcome, "+ (user!!.email?.substringBefore('@') ?: "user")
+        }
+
 
 
         val layoutManager = LinearLayoutManager(this)
@@ -76,9 +86,6 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
             rv.adapter = myAdapter
         }
 
-
-
-
     }
 
 
@@ -95,7 +102,7 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
     }
 
     override fun onItemLongClickedFromAdapter(shelf: ShelfData) {
-        Toast.makeText(this, "You long Click the ${shelf.name} see more!", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "You long Click the ${shelf.name} see more!", Toast.LENGTH_SHORT).show()
     }
 
 

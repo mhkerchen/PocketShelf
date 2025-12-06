@@ -45,7 +45,7 @@
                 android:id="@+id/header_text_isbn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ISBN Lookup"
+                android:text="API Lookup"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Enter ISBN"
+                    android:hint="Enter query"
                     android:inputType="text" />
 
                 <Button
@@ -225,7 +225,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Pick Image" />
+                    android:text="Pick Image"
+                    app:icon="@drawable/ic_add" />
 
             </LinearLayout>
 

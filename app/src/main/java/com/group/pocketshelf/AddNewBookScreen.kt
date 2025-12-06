@@ -8,6 +8,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import android.app.Activity
+import android.content.Intent
+import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -68,6 +72,29 @@ class AddNewBookScreen : AppCompatActivity() {
         val submitButton = findViewById<Button>(R.id.submit_button)
         submitButton.setOnClickListener {
             addBook() // also finishes activity BTW
+        }
+
+
+        // Image picker code
+
+        var selectedImage: ImageView = findViewById(R.id.cover_preview_image)
+        val changeImage = registerForActivityResult( ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val data = it.data
+                val imgUri = data?.data
+                selectedImage.setImageURI(imgUri)
+                //isImageUrl = false
+                imageSource = imgUri.toString()
+
+            }
+        }
+        val pickImgButton = findViewById<Button>(R.id.pick_image_button)
+        pickImgButton.setOnClickListener {
+            val pickImg = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI
+            )
+            changeImage.launch(pickImg)
         }
 
 //        searchAPI("harry potter")
@@ -156,7 +183,7 @@ class AddNewBookScreen : AppCompatActivity() {
         var book = BookData(
             title = bookTitle.text.toString(),
             img_url = imageSource,
-            cover_is_url = isImageUrl ?: false,
+            cover_is_url = isImageUrl ?: true,
             author = author.text.toString(),
             page_count = pagecount.text.toString(),
             synopsis = synopsis.text.toString(),
