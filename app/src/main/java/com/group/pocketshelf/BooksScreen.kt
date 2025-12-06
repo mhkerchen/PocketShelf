@@ -107,12 +107,14 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
 
 
     override fun onItemClickedFromAdapter(book: BookData) {
-
-        Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, BookTemplateActivity::class.java)
+        intent.putExtra("BOOK", book)
+        startActivity(intent);
+        //Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
     }
     override fun onItemLongClickedFromAdapter(book: BookData) {
 
-        Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
 
     }
 

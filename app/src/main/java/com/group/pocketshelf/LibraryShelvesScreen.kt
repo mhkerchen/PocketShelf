@@ -107,8 +107,10 @@ class LibraryShelvesScreen : AppCompatActivity(), LibraryShelfAdapter.MyItemClic
 
 
     override fun onItemClickedFromAdapter(book: BookData) {
-        Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
-
+        //Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, BookTemplateActivity::class.java)
+        intent.putExtra("BOOK", book)
+        startActivity(intent);
     }
 
     // Sets up the back/up button
