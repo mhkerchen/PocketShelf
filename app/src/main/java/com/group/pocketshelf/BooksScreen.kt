@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
@@ -113,8 +114,29 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
         //Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
     }
     override fun onItemLongClickedFromAdapter(book: BookData) {
+        var auth = FirebaseAuth.getInstance()
 
-        //Toast.makeText(this, "This will open the ${book.title} book detail pane.", Toast.LENGTH_SHORT).show()
+        val query = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("books")
+        query.get().addOnSuccessListener { snapshot ->
+            var delkey = ""
+            for (child in snapshot.children) {
+                val foundbook = child.getValue(BookData::class.java)
+                if (foundbook?.title == book?.title) {
+                    delkey = child.key ?: ""
+                }
+            }
+
+            if (delkey != "") {
+                val deleteme = FirebaseDatabase.getInstance().reference
+                    .child("users").child(auth.uid!!).child("books").child(delkey)
+
+                deleteme.removeValue()
+                    .addOnSuccessListener {
+
+                        reload()  // need to reload the adapter from firebase
+                    }
+            }
+        }
 
     }
 
@@ -133,6 +155,12 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
 
     override fun onResume() {
         super.onResume()
+
+        reload()
+    }
+
+    fun reload() {
+
         val NUMBER_COLUMNS = 4
         val layoutManager = GridLayoutManager(this, NUMBER_COLUMNS)
         val thisScope = this
