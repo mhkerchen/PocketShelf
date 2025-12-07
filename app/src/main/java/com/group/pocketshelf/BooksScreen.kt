@@ -30,6 +30,11 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
+import android.graphics.pdf.PdfDocument
+import android.os.Environment
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 
@@ -124,10 +129,11 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
                     //On this screen
                     true
                 }
-                R.id.nav_export-> {
-
+                R.id.nav_export -> {
+                    exportBooks()
                     true
                 }
+
                 R.id.nav_scan -> {
                     checkCameraPermission()
                     true
@@ -287,6 +293,61 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
                     rv.adapter = myAdapter
                 }
             }
+        }
+    }
+
+    fun createPdf(books: List<BookData>) {
+        val pdfDocument = PdfDocument()
+        val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create() // A4
+
+        val page = pdfDocument.startPage(pageInfo)
+        val canvas = page.canvas
+
+        var y = 40
+        val paint = android.graphics.Paint()
+        paint.textSize = 12f
+
+        paint.textAlign = android.graphics.Paint.Align.CENTER
+        canvas.drawText("My Book Shelf", pageInfo.pageWidth / 2f, y.toFloat(), paint)
+
+        paint.textAlign = android.graphics.Paint.Align.LEFT
+        y += 40
+
+        for (book in books) {
+            canvas.drawText("Title: ${book.title}", 40f, y.toFloat(), paint)
+            y += 20
+            canvas.drawText("Author: ${book.author}", 40f, y.toFloat(), paint)
+            y += 20
+            canvas.drawText("Pages: ${book.page_count}", 40f, y.toFloat(), paint)
+            y += 30
+        }
+
+        pdfDocument.finishPage(page)
+
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "books_export.pdf")
+        try {
+            pdfDocument.writeTo(FileOutputStream(file))
+            Toast.makeText(this, "PDF saved to Downloads", Toast.LENGTH_LONG).show()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error creating PDF", Toast.LENGTH_SHORT).show()
+        }
+
+        pdfDocument.close()
+    }
+
+    fun exportBooks() {
+        val auth = FirebaseAuth.getInstance()
+        val userBooksRef = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("books")
+
+        userBooksRef.get().addOnSuccessListener { snapshot ->
+            val books = ArrayList<BookData>()
+            for (item in snapshot.children) {
+                val book = item.getValue(BookData::class.java)
+                if (book != null) books.add(book)
+            }
+
+            createPdf(books)
         }
     }
 
