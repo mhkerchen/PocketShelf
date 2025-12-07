@@ -27,6 +27,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.squareup.picasso.Picasso
+import com.journeyapps.barcodescanner.CaptureActivity
+import com.journeyapps.barcodescanner.ScanOptions
+import com.journeyapps.barcodescanner.ScanContract
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 
 
 class AddNewBookScreen : AppCompatActivity() {
@@ -100,6 +107,11 @@ class AddNewBookScreen : AppCompatActivity() {
 
 //        searchAPI("harry potter")
         //searchAPI("isbn:9781949846416")
+
+        val scannedIsbn = intent.getStringExtra("SCANNED_ISBN")
+        if (scannedIsbn != null) {
+            findViewById<EditText>(R.id.isbn_input).setText("isbn:$scannedIsbn")
+        }
 
     }
 

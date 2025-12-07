@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,6 +22,16 @@ import com.google.firebase.database.GenericTypeIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.journeyapps.barcodescanner.CaptureActivity
+import com.journeyapps.barcodescanner.ScanOptions
+import com.journeyapps.barcodescanner.ScanContract
+import android.widget.EditText
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+
+
 
 class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
 
@@ -104,8 +115,63 @@ class BooksScreen : AppCompatActivity(), BooksAdapter.MyItemClickListener {
             intent.putExtra("ADD_TO_SHELF", shelfname)
             startActivity(intent);
         }
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.selectedItemId = R.id.nav_home // highlight current tab
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    //On this screen
+                    true
+                }
+                R.id.nav_export-> {
+
+                    true
+                }
+                R.id.nav_scan -> {
+                    checkCameraPermission()
+                    true
+                }
+                R.id.nav_settings -> {
+                    // Empty
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) {
+            Toast.makeText(this, "Camera permission granted", Toast.LENGTH_SHORT).show()
+            // Launch barcode scanner
+            val options = ScanOptions()
+            options.setPrompt("Scan a book barcode")
+            options.setBeepEnabled(true)
+            options.setOrientationLocked(true)
+            barcodeLauncher.launch(options)
+        } else {
+            Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkCameraPermission() {
+        cameraLauncher.launch(Manifest.permission.CAMERA)
+    }
+
+    private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
+        if (result.contents != null) {
+            // User scanned a barcode
+            val intent = Intent(this, AddNewBookScreen::class.java)
+            intent.putExtra("ADD_TO_SHELF", "shelf1")
+            intent.putExtra("SCANNED_ISBN", result.contents)
+            startActivity(intent)
+        } else {
+            // User pressed back or cancelled the scan
+            Toast.makeText(this, "Scan cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onItemClickedFromAdapter(book: BookData) {
         val intent = Intent(this, BookTemplateActivity::class.java)
