@@ -91,7 +91,7 @@ class AddNewBookScreen : AppCompatActivity() {
                 val data = it.data
                 val imgUri = data?.data
                 selectedImage.setImageURI(imgUri)
-                //isImageUrl = false
+                isImageUrl = false
                 imageSourceURI = imgUri.toString()
 
             }

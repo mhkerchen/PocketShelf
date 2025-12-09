@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Button
+import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
@@ -79,7 +80,7 @@ import com.squareup.picasso.Picasso
                             var path = foundBooks[0].img_url
                             Picasso.get().load(path).into(holder.firstcover)
                         } else {
-                            // TODO
+                            holder.firstcover.setImageResource(R.drawable.notfound)
                         }
                         holder.firstcover.setOnClickListener {
                             myListener!!.onItemClickedFromAdapter(foundBooks[0])
@@ -91,7 +92,7 @@ import com.squareup.picasso.Picasso
                                 var path = foundBooks[1].img_url
                                 Picasso.get().load(path).into(holder.secondcover)
                             } else {
-                                // TODO
+                                holder.secondcover.setImageResource(R.drawable.notfound)
                             }
 
                             holder.secondcover.setOnClickListener {

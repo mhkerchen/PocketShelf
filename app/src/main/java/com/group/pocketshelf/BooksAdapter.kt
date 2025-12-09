@@ -1,5 +1,6 @@
 package com.group.pocketshelf
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.cardview.widget.CardView
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import androidx.core.net.toUri
 
 class BooksAdapter(val items: ArrayList<BookData>):
         RecyclerView.Adapter<BooksAdapter.BookViewHolder>(){
@@ -47,7 +49,7 @@ class BooksAdapter(val items: ArrayList<BookData>):
                 Picasso.get().load(path)
                     .into(holder.bookImg)
             } else {
-                // TODO get book cover from firebase storage?
+                holder.bookImg.setImageResource(R.drawable.notfound)
             }
 
             holder.bookCard.setOnClickListener {
