@@ -12,13 +12,5 @@ class GoogleBooksAPI {
             @Query("q") searchQuery: String,
             @Query("maxResults") maxResults: Int = 20
         ): Response<DCGoogleBooks1>
-
-//        @GET("volumes/{id}")
-//        suspend fun getBookDetails(
-//            @Path("id") id: String,
-//        ): Response<BookDetails>
-
     }
-
-
 }

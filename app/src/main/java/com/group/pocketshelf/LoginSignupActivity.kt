@@ -1,8 +1,5 @@
 package com.group.pocketshelf
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast

@@ -27,13 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.squareup.picasso.Picasso
-import com.journeyapps.barcodescanner.CaptureActivity
-import com.journeyapps.barcodescanner.ScanOptions
-import com.journeyapps.barcodescanner.ScanContract
-import androidx.core.content.ContextCompat
-import android.Manifest
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
 
 
 class AddNewBookScreen : AppCompatActivity() {

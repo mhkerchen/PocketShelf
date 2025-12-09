@@ -27,28 +27,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, StartingActivity::class.java)
         startActivity(intent);
 
-        // computer security is my passion
-        // XSVhqqutpvPIpScdLr0jkLBzGs42
-//        val email = "test@y.com"
-//        val password = "123456"
-
-//
-//        auth = FirebaseAuth.getInstance()
-//        auth.signInWithEmailAndPassword(email, password)
-//
-//        createNewUser("test1@test1.org", "1234567890")
-
-//        // Autostarts the AddNewBook, for troubleshooting :)
-//        val intent = Intent(this, AddNewBookScreen::class.java)
-//        startActivity(intent);
-
-//        // Autostarts the user library, for troubleshooting :)
-//        val intent = Intent(this, LibraryShelvesScreen::class.java)
-//        startActivity(intent);
-//
-//        // Autostarts the shelf view, for troubleshooting :)
-//        val intent = Intent(this, BooksScreen::class.java)
-//        startActivity(intent);
     }
 
 

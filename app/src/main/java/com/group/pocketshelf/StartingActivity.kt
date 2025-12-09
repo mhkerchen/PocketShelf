@@ -14,7 +14,6 @@ class StartingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_starting)
-        // This connects to res/layout/activity_starting.xml
 
 
         // Finds the "Get Started" button
