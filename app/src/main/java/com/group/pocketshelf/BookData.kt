@@ -16,6 +16,9 @@ data class BookData (
     @SerializedName("rating"    ) var rating        : String? = null,
     @SerializedName("notes"     ) var notes         : String? = null,
 
+    // Firebase key
+    @SerializedName("key") var key: String? = null,
+
     // determinant
     @SerializedName("cover_is_url") var cover_is_url: Boolean = true,
     @SerializedName("img_url"   ) var img_url       : String? = null,

@@ -84,7 +84,7 @@ class LoginSignupActivity : AppCompatActivity() {
 
                 } else {
 
-                    Toast.makeText(this, "Signup failed. Make sure that you provided a \nvalid email and a password over 6 characters.",
+                    Toast.makeText(this, "Signup failed. Make sure that you provided a valid email and password.",
                         Toast.LENGTH_SHORT).show()
                 }
             }

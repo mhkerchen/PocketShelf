@@ -208,6 +208,7 @@ class AddNewBookScreen : AppCompatActivity() {
         var auth = FirebaseAuth.getInstance()
         val users = FirebaseDatabase.getInstance().reference.child("users").child(auth.uid!!).child("books")
         var new: DatabaseReference = users.push()
+        book.key = new.key
         new.setValue(book)
 
         if (shelfname != null) {
